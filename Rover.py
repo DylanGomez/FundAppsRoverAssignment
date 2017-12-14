@@ -1,8 +1,8 @@
 from random import randint
 
 # Generally used variables
-xAxis = 0
-yAxis = 0
+startYAxis = 0
+startXAxis = 0
 facingDirection = "North"
 
 command = input("What does the Rover need to do?: ").upper()
@@ -22,7 +22,8 @@ command = input("What does the Rover need to do?: ").upper()
 """
 
 def moveForward(commandInput, placeY, placeX, currentDirection):
-    for letter in command:
+
+    for letter in commandInput:
         if(letter == "F"):
             placeY += 1
         elif(letter == "R" and currentDirection == "North"):
@@ -53,7 +54,7 @@ def moveForward(commandInput, placeY, placeX, currentDirection):
 # Test does succeed, so yay for now.
 def moveForwardInTwoDirections(commandInput, placeY, placeX, currentDirection):
 
-    for letter in command:
+    for letter in commandInput:
         if(letter == "F" and currentDirection == "North"):
             placeY += 1
         elif(letter == "R" and currentDirection == "North"):
@@ -86,7 +87,8 @@ def moveForwardInTwoDirections(commandInput, placeY, placeX, currentDirection):
     
 """
 def checkForBorders(commandInput, placeY, placeX, currentDirection):
-    for letter in command:
+
+    for letter in commandInput:
 
         if(letter == "B" and placeY == 0 or letter == "F" and placeX == 100):
             print("Oops, you can't go here, you are set back to your previous location")
@@ -104,7 +106,7 @@ def checkForBorders(commandInput, placeY, placeX, currentDirection):
             elif (letter == "F" and currentDirection == "South"):
                 placeY -= 1
 
-            elif (letter == "F" and currentDirection == "East"):
+            elif (letter == "F" and currentDirection == "West"):
                 placeY -= 1
 
     print("Rover is at position:", placeY, ",", placeX ,"facing", currentDirection)
@@ -120,10 +122,13 @@ def checkForBorders(commandInput, placeY, placeX, currentDirection):
     
     Unit test name: test_checkForBackwardsMovement()
     expected output for unit test: 1, 0, "North"
+    
+    test succeeded: 14-12-2017
 
 """
-def newBackwarsMovement(commandInput, placeY, placeX, currentDirection):
-    for letter in command:
+def newBackwardsMovement(commandInput, placeY, placeX, currentDirection):
+
+    for letter in commandInput:
 
 
         if (letter == "B" and placeY == 0 or letter == "F" and placeY == 100):
@@ -190,6 +195,8 @@ def newBackwarsMovement(commandInput, placeY, placeX, currentDirection):
     Expected output: 1,0 "North"
     
     For the test there has been put an obstacle on 2,0 
+    
+    test succeeded: 14-12-2017
 
 """
 
@@ -227,7 +234,8 @@ def checkForObstacle(positionY, positionX):
 
 #Check every command that is given
 def movementForRoverWithObstacles(commandInput, placeY, placeX, currentDirection):
-    for letter in command:
+
+    for letter in commandInput:
         #TODO this fix will not work for every side of the grid fixing in test 6
         if (letter == "B" and placeY == 0 or letter == "F" and placeY == 100):
             print("Oops, you can't go here, you are set back to your previous location")
@@ -246,7 +254,7 @@ def movementForRoverWithObstacles(commandInput, placeY, placeX, currentDirection
                     placeY -= 1
                     if (checkForObstacle(placeY, placeX)):
                         placeY +=1
-                elif (currentDirection == "East"):
+                elif (currentDirection == "West"):
                     placeX -= 1
                     if (checkForObstacle(placeY, placeX)):
                         placeX += 1
@@ -265,7 +273,7 @@ def movementForRoverWithObstacles(commandInput, placeY, placeX, currentDirection
                     placeY += 1
                     if (checkForObstacle(placeY, placeX)):
                         placeY -=1
-                elif (currentDirection == "East"):
+                elif (currentDirection == "West"):
                     placeX += 1
                     if (checkForObstacle(placeY, placeX)):
                         placeX += 1
@@ -299,7 +307,6 @@ def movementForRoverWithObstacles(commandInput, placeY, placeX, currentDirection
     return result
 
 
-# movementForRoverWithObstacles(command, yAxis, xAxis, facingDirection)
 
 """ 
     Test 5: Making all borders collidable
@@ -313,5 +320,114 @@ def movementForRoverWithObstacles(commandInput, placeY, placeX, currentDirection
     Expected output: 1,0 "North"
 
     For the test there has been put an obstacle on 2,0 
-
+    
+    test succeeded: 14-12-2017
 """
+
+
+#Making obstacles
+obstacleYAxis = [2, 5, 6]
+obstacleXAxis = [0, 3, 9]
+
+#Adding random obstacles to the grid
+amountObstacles = randint(0,100)
+
+# Location of the obstacles
+# Check if i is uneven or even to spread the obstacles around the grid
+#  In future iteration this can get changed.
+#  Currently not used since it is really annoying for consistent testing
+
+def addingObstaclesToGridRandomized():
+
+    for i in range (0, amountObstacles):
+
+        if(i % 2 == 0):
+            obstacleXAxis.append(randint(0,100))
+        else:
+            obstacleYAxis.append(randint(0,100))
+
+# This method checks if there is an obstacle on the given position
+# If so, it returns true so that the other part of the code knows that an obstacle has been discovered.
+#Added grid detection to obstacle detection
+def checkForObstacleOrEdge(positionY, positionX):
+
+    if(positionY in obstacleYAxis and positionX in obstacleXAxis):
+        print("Obstacle discovered, Going back to previous location")
+        return True
+    elif(positionY == 101 or positionY  == -1  or positionX == 101 or positionX == -1 ):
+        print("Border detected, going back to previous location")
+        return True
+    else:
+        return False
+
+
+#Check every command that is given
+def movementForRoverWithBorderCheck(commandInput, placeY, placeX, currentDirection):
+    for letter in commandInput:
+        # Movement with command F
+        if (letter == "F"):
+            if(currentDirection == "North"):
+                placeY += 1
+                if(checkForObstacleOrEdge(placeY, placeX) ):
+                    placeY -= 1
+            elif (currentDirection == "East"):
+                placeX += 1
+                if (checkForObstacleOrEdge(placeY, placeX)):
+                    placeX -= 1
+            elif (currentDirection == "South"):
+                placeY -= 1
+                if (checkForObstacleOrEdge(placeY, placeX)):
+                    placeY +=1
+            elif (currentDirection == "East"):
+                placeX -= 1
+                if (checkForObstacleOrEdge(placeY, placeX)):
+                    placeX += 1
+
+
+        # Movement with command B
+        elif (letter == "B"):
+            if (currentDirection == "North"):
+                placeY -= 1
+                if (checkForObstacleOrEdge(placeY, placeX)):
+                    placeY += 1
+            elif (currentDirection == "East"):
+                placeX -= 1
+                if (checkForObstacleOrEdge(placeY, placeX)):
+                    placeX +=1
+            elif (currentDirection == "South"):
+                placeY += 1
+                if (checkForObstacleOrEdge(placeY, placeX)):
+                    placeY -=1
+            elif (currentDirection == "West"):
+                placeX += 1
+                if (checkForObstacleOrEdge(placeY, placeX)):
+                    placeX += 1
+
+        # Changing directions with command: R
+
+        elif (letter == "R"):
+            if(currentDirection == "North"):
+                currentDirection = "East"
+            elif ( currentDirection == "East"):
+                currentDirection = "South"
+            elif (currentDirection == "South"):
+                currentDirection = "West"
+            elif (currentDirection == "West"):
+                currentDirection = "North"
+
+        # Changing directions with command: L
+
+        elif (letter == "L"):
+            if(currentDirection == "North"):
+                currentDirection = "West"
+            elif (currentDirection == "East"):
+                currentDirection = "North"
+            elif (currentDirection == "South"):
+                currentDirection = "East"
+            elif (currentDirection == "West"):
+                currentDirection = "South"
+
+
+    print("Rover is at position:", placeY, ",", placeX, "facing", currentDirection)
+    result = placeY, placeX, currentDirection
+    return result
