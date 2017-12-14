@@ -9,6 +9,8 @@ I chose Python and PythonUnitTesting respectively for making this assignment, as
 
 ## My Mindset per test
 
+Little disclaimer, don't be scared by the amount of code that is in the Python file, for full transparency I put every test iteration into the same file, split by comments to show how my code changed by adding requirements. Every iteration also defines the test that has been done.
+
 I began the assignment by defining little test for myself (on paper) to just get a feeling of how I wanted to tackle the problems. Since it was my first time using Unit Tests in Python it was also a bit of an introduction phase to getting me up to full speed :).
 
 The first three tests are really simple and go into the movement and starting to get a feeling about the border of the Rover. 
