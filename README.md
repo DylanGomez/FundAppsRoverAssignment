@@ -24,7 +24,7 @@ everything code-explaining related is commented in the python project :)
 
 ## What would I change in the future?
 
-If I had more time to work on this project I would find a better way of handling the movement of the Rover, now I just used if/elif/else statements that work, but I just feel like I can improve on that way more then I did now. 
+If I had more time to work on this project I would find a better way of handling the movement of the Rover, now I just used if/elif/else statements that work, but I just feel like I can improve on that way more than I did now. 
 
 And I would (of course) finish my randomized obstacle creator just for fun!
 
